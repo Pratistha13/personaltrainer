@@ -16,6 +16,7 @@ import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import { forwardRef } from "react";
 import * as moment from "moment";
+import Snackbar from "@material-ui/core/Snackbar";
 
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -43,6 +44,8 @@ const tableIcons = {
 
   export default function Traininglist() {
     const[trainings, setTrainings]= useState([]);
+    const [msg, setMsg] = useState("");
+    const [open, setOpen] = useState(false);
 
     useEffect(()=>{
         getTrainings();
@@ -66,16 +69,45 @@ const tableIcons = {
         .catch(err=>console.error(err))
     }
 
+    const deleteTraining = (link) => {
+      console.log(link);
+      fetch("https://customerrest.herokuapp.com/api/trainings/" + link, { method: "DELETE" })
+        .then((_) => getTrainings())
+        .then((_) => {
+          setMsg("Training deleted");
+          setOpen(true);
+        })
+        .catch((err) => console.error(err));
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+    };
+
     return(
     <div>
-        <MaterialTable
-            icons ={tableIcons}
-            title="Trainings"
-            data={trainings}
-            columns={columns}
-            options={{ sorting: true, search: true}}
-            
-        />
+         <MaterialTable
+        icons={tableIcons}
+        title="Traininglist"
+        options={{
+          search: true,
+          sorting: true,
+        }}
+        columns={columns}
+        data={trainings}
+      editable = {{
+          onRowDelete: (link) =>
+            new Promise((resolve) => {
+              deleteTraining(link.id);
+              resolve();
+            })}}
+      />
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        message={msg}
+      />
     </div>
-    );
+  );
 }
