@@ -18,12 +18,15 @@ import ListItemText from '@material-ui/core/ListItemText';
 import DirectionsRunIcon from "@material-ui/icons/DirectionsRun";
 import SupervisedUserCircleIcon from "@material-ui/icons/SupervisedUserCircle";
 import HomeIcon from "@material-ui/icons/Home";
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+import EqualizerIcon from '@material-ui/icons/Equalizer';
 import { Switch, Route, Link, BrowserRouter } from "react-router-dom";
 
 import Customerlist from '../Pages/Customerlist';
 import Traininglist from '../Pages/Traininglist';
 import HomeScreen from '../Pages/HomeScreen';
 import CalendarPage from '../Pages/CalendarPage';
+import Statistics from '../Pages/Statistics';
 
 
 const drawerWidth = 240;
@@ -164,10 +167,17 @@ export default function PersistentDrawerLeft() {
               </ListItem>
               <ListItem component={Link} to={"/CalendarPage"}>
                 <ListItemIcon>
-                  <DirectionsRunIcon />
+                  <CalendarTodayIcon />
                 </ListItemIcon>
                 <ListItemText primary="CalendarPage" />
               </ListItem>
+              <ListItem component={Link} to={"/Statistics"}>
+                <ListItemIcon>
+                  <EqualizerIcon />
+                </ListItemIcon>
+                <ListItemText primary="Statistics" />
+              </ListItem>
+              
             </List>
           </Drawer>
         </nav>
@@ -183,6 +193,7 @@ export default function PersistentDrawerLeft() {
             <Route path="/Customerlist" render={() => <Customerlist />} />
             <Route path="/Traininglist" render={() => <Traininglist />} />
             <Route path="/CalendarPage" render={() => <CalendarPage />} />
+            <Route path="/Statistics" render={() => <Statistics />} />
             
           </Switch>
         </main>
